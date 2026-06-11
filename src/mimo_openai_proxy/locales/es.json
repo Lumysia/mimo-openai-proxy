@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "invalid_api_key": "Clave de API no valida.",
+    "invalid_request_error": "Solicitud no valida.",
+    "upstream_error": "Error en la solicitud al upstream de MiMo."
+  }
+}

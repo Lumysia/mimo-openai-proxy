@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "invalid_api_key": "API key가 유효하지 않습니다.",
+    "invalid_request_error": "요청이 유효하지 않습니다.",
+    "upstream_error": "MiMo upstream request failed."
+  }
+}

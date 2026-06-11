@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "invalid_api_key": "Cle API non valide.",
+    "invalid_request_error": "Requete non valide.",
+    "upstream_error": "La requete vers l'upstream MiMo a echoue."
+  }
+}

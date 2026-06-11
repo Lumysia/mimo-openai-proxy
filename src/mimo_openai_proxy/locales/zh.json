@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "invalid_api_key": "API key 无效。",
+    "invalid_request_error": "请求无效。",
+    "upstream_error": "上游 MiMo 请求失败。"
+  }
+}

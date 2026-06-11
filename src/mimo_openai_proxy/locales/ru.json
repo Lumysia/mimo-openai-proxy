@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "invalid_api_key": "Nedopustimy API key.",
+    "invalid_request_error": "Nedopustimy zapros.",
+    "upstream_error": "Sboy zaprosa k upstream MiMo."
+  }
+}

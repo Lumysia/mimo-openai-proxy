@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "invalid_api_key": "Ungultiger API-Schlussel.",
+    "invalid_request_error": "Ungultige Anfrage.",
+    "upstream_error": "Anfrage an den MiMo-Upstream fehlgeschlagen."
+  }
+}
