@@ -100,15 +100,15 @@ async def list_models(
     request: Request,
     _auth: None = Depends(require_api_key),
 ) -> dict[str, Any]:
-    app_settings: Settings = request.app.state.settings
+    model_id = await request.app.state.mimo.model_id()
     return {
         "object": "list",
         "data": [
             {
-                "id": app_settings.model_id,
+                "id": model_id,
                 "object": "model",
                 "created": 0,
-                "owned_by": app_settings.model_owner,
+                "owned_by": "mimo",
             }
         ],
     }

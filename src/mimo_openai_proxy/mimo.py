@@ -1,8 +1,10 @@
 import base64
 import json
 import time
+import uuid
 from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -23,9 +25,32 @@ class MimoClient:
         )
         self._jwt: str | None = None
         self._expires_at_ms = 0
+        self._model_id: str | None = None
 
     async def close(self) -> None:
         await self._client.aclose()
+
+    async def model_id(self) -> str:
+        if self._model_id:
+            return self._model_id
+
+        payload = {
+            "model": "mimo-auto",
+            "messages": [{"role": "user", "content": ""}],
+            "max_tokens": 1,
+        }
+        response = await self.chat(payload)
+        try:
+            data = response.json()
+        except ValueError as exc:
+            raise upstream_error("MiMo model probe returned an invalid JSON payload") from exc
+
+        model_id = data.get("model")
+        if not isinstance(model_id, str) or not model_id:
+            raise upstream_error("MiMo model probe returned an invalid model value")
+
+        self._model_id = model_id
+        return model_id
 
     async def chat(self, payload: dict[str, Any]) -> httpx.Response:
         try:
@@ -65,7 +90,7 @@ class MimoClient:
         try:
             response = await self._client.post(
                 self._settings.bootstrap_url,
-                json={"client": self._settings.client_id},
+                json={"client": client_id(self._settings)},
             )
             response.raise_for_status()
             data = response.json()
@@ -104,3 +129,21 @@ def normalize_expiry_ms(expires_at: object) -> int:
     if value < 10_000_000_000:
         return value * 1000
     return value
+
+
+def client_id(settings: Settings) -> str:
+    if settings.client_id:
+        return settings.client_id
+
+    path = Path(settings.client_id_file)
+    try:
+        existing = path.read_text(encoding="utf-8").strip()
+        if existing:
+            return existing
+    except OSError:
+        pass
+
+    generated = uuid.uuid4().hex
+    with suppress(OSError):
+        path.write_text(generated, encoding="utf-8")
+    return generated

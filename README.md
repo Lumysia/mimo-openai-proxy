@@ -32,11 +32,11 @@ curl http://127.0.0.1:8000/v1/chat/completions \
 
 - `MIMO_HOST`: bind host, defaults to `127.0.0.1`.
 - `MIMO_PORT`: bind port, defaults to `8000`.
-- `MIMO_CLIENT_ID`: client identifier used during MiMo bootstrap, defaults to `mimo-openai-proxy`.
+- `MIMO_CLIENT_ID`: optional bootstrap client id. Empty value creates a local random id.
+- `MIMO_CLIENT_ID_FILE`: file used to persist the random bootstrap client id.
 - `MIMO_API_KEYS`: optional comma-separated Bearer keys for `/v1/*` routes.
 - `MIMO_CORS_ORIGINS`: optional comma-separated CORS origins.
-- `MIMO_ERROR_LANGUAGE`: error language, `en` or `zh`, defaults to `en`.
-- `MIMO_MODEL_ID`: OpenAI model id shown by `/v1/models`, defaults to `mimo-auto`.
+- `MIMO_ERROR_LANGUAGE`: error language loaded from `locales/<language>.json`, defaults to `en`.
 - `MIMO_REQUEST_TIMEOUT`: upstream request timeout in seconds, defaults to `120`.
 - `MIMO_MAX_CONNECTIONS`: max upstream HTTP connections, defaults to `100`.
 - `MIMO_MAX_KEEPALIVE_CONNECTIONS`: max idle upstream HTTP connections, defaults to `20`.

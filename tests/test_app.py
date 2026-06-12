@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from mimo_openai_proxy.app import create_app
 from mimo_openai_proxy.config import Settings
 from mimo_openai_proxy.errors import available_languages, message
-from mimo_openai_proxy.mimo import normalize_expiry_ms, token_expiry_ms
+from mimo_openai_proxy.mimo import client_id, normalize_expiry_ms, token_expiry_ms
 
 app = create_app(Settings(api_keys=""))
 
@@ -18,6 +18,9 @@ class FakeMimoClient:
         from httpx import Response
 
         return Response(200, json={"model": payload["model"], "choices": []})
+
+    async def model_id(self) -> str:
+        return "mimo-auto"
 
     def stream_chat(self, _payload: dict[str, object]):
         return FakeStream()
@@ -127,3 +130,17 @@ def test_token_expiry_accepts_jwt_seconds() -> None:
     jwt = "header.eyJleHAiOjE3ODEyMjEwMDh9.signature"
 
     assert token_expiry_ms(jwt) == 1_781_221_008_000
+
+
+def test_client_id_uses_configured_value() -> None:
+    assert client_id(Settings(client_id="configured-client")) == "configured-client"
+
+
+def test_client_id_generates_and_reuses_random_value(tmp_path) -> None:
+    path = tmp_path / "client"
+    settings = Settings(client_id="", client_id_file=str(path))
+
+    generated = client_id(settings)
+
+    assert len(generated) == 32
+    assert client_id(settings) == generated
