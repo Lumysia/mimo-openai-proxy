@@ -32,7 +32,7 @@ curl http://127.0.0.1:8000/v1/chat/completions \
 
 - `MIMO_HOST`: bind host, defaults to `127.0.0.1`.
 - `MIMO_PORT`: bind port, defaults to `8000`.
-- `MIMO_CLIENT_ID`: optional bootstrap client id. Empty value creates a local random id.
+- `MIMO_CLIENT_ID`: optional bootstrap client id. Empty value creates a local random SHA-256 id.
 - `MIMO_CLIENT_ID_FILE`: file used to persist the random bootstrap client id.
 - `MIMO_API_KEYS`: optional comma-separated Bearer keys for `/v1/*` routes.
 - `MIMO_CORS_ORIGINS`: optional comma-separated CORS origins.

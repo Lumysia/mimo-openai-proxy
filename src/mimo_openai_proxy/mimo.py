@@ -1,4 +1,5 @@
 import base64
+import hashlib
 import json
 import time
 import uuid
@@ -143,7 +144,7 @@ def client_id(settings: Settings) -> str:
     except OSError:
         pass
 
-    generated = uuid.uuid4().hex
+    generated = hashlib.sha256(uuid.uuid4().bytes).hexdigest()
     with suppress(OSError):
         path.write_text(generated, encoding="utf-8")
     return generated

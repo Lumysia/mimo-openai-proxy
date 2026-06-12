@@ -142,5 +142,6 @@ def test_client_id_generates_and_reuses_random_value(tmp_path) -> None:
 
     generated = client_id(settings)
 
-    assert len(generated) == 32
+    assert len(generated) == 64
+    assert generated.isalnum()
     assert client_id(settings) == generated
